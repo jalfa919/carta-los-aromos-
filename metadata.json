@@ -1,0 +1,6 @@
+{
+  "name": "Kitchen Los Aromos - Sushi, Hand Rolls & Fast Food",
+  "description": "Carta digital y pedidos online directo a WhatsApp para Kitchen Los Aromos (Coquimbo). Tablas de sushi, sushi burgers, hand rolls y papas cheddar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

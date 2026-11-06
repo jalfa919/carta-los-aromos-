@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitchen Los Aromos - Carta Digital & Pedidos WhatsApp</title>
+  <meta name="description" content="Carta digital de sushi, hand rolls, sushi burgers, sándwiches y smoothies de Kitchen Los Aromos en Coquimbo. Pide directo por WhatsApp.">
+  
+  <!-- Favicon y estilos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS vía HTTPS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons vía HTTPS -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- QRCode Generator vía HTTPS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['Cinzel', 'serif'],
+          },
+          colors: {
+            brand: {
+              red: '#dc2626',
+              dark: '#0d0f12',
+              card: '#15181e',
+              border: '#232730',
+              gold: '#f59e0b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #0d0f12;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+    /* Estilos de scrollbar personalizados */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d0f12;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #dc2626;
+    }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-red-600 selection:text-white">
+
+  <!-- TOP BANNER -->
+  <div class="bg-gradient-to-r from-red-950 via-red-900 to-zinc-950 text-white text-[11px] sm:text-xs py-1.5 px-4 text-center font-medium border-b border-red-800/40 flex items-center justify-center gap-2">
+    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    <span>🍣 <strong>Kitchen Los Aromos</strong> — Abierto en Coquimbo • Pedidos directos a WhatsApp al <strong>+56 9 7955 3144</strong></span>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-[#0d0f12]/95 backdrop-blur-md border-b border-zinc-800/80 px-4 py-3 sm:py-3.5">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+      <!-- Logo y Título -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center text-white shadow-lg shadow-red-950/50 font-cinzel font-black text-xl border border-red-500/30">
+          K
+        </div>
+        <div>
+          <h1 class="font-cinzel font-bold text-base sm:text-xl text-white tracking-wide">
+            KITCHEN LOS AROMOS
+          </h1>
+          <p class="text-[10px] sm:text-xs text-zinc-400 font-medium">Sushi, Hand Rolls & Fast Food</p>
+        </div>
+      </div>
+
+      <!-- Acciones de Cabecera -->
+      <div class="flex items-center gap-2">
+        <!-- Botón Compartir QR -->
+        <button onclick="openModal('shareModal')" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white flex items-center gap-1.5 transition-colors">
+          <i data-lucide="share-2" class="w-4 h-4 text-red-500"></i>
+          <span class="hidden sm:inline">Compartir / QR</span>
+        </button>
+
+        <!-- Botón Reservar -->
+        <button id="headerReservaBtn" onclick="openModal('reservaModal')" class="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white transition-colors">
+          <i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i>
+          <span>Mesa</span>
+        </button>
+
+        <!-- Carrito de compras -->
+        <button onclick="toggleCart()" class="relative px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-red-950/50 transition-all active:scale-95">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Pedido</span>
+          <span id="cartCountBadge" class="w-5 h-5 rounded-full bg-white text-red-600 font-bold text-[11px] flex items-center justify-center">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative bg-gradient-to-b from-zinc-900 via-[#12151b] to-[#0d0f12] border-b border-zinc-800/80 px-4 py-8 sm:py-12">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+      <div class="max-w-xl space-y-4 text-center md:text-left">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>La auténtica cocina japonesa & fast food en Coquimbo</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white font-cinzel leading-tight tracking-tight">
+          Sabor artesanal, cortes frescos y crujientes
+        </h2>
+        <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed">
+          Pide tus tablas favoritas, promociones de 40 y 50 cortes, sushi burgers en panko, hand rolls y exquisitos smoothies con despacho a domicilio o retiro directo.
+        </p>
+
+        <!-- Botones de Acción Hero -->
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
+          <a href="#carta-productos" class="px-5 py-3 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-xl shadow-red-950/60 transition-transform active:scale-95">
+            <i data-lucide="utensils" class="w-4 h-4"></i>
+            <span>Ver la Carta</span>
+          </a>
+          <a href="https://wa.me/c/56979553144" target="_blank" class="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-xl shadow-emerald-950/60 transition-transform active:scale-95">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>Catálogo WhatsApp</span>
+          </a>
+          <button onclick="openModal('shareModal')" class="px-4 py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white font-semibold text-xs sm:text-sm flex items-center gap-2 transition-colors">
+            <i data-lucide="qr-code" class="w-4 h-4 text-red-400"></i>
+            <span>Código QR</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Promoción Destacada Card -->
+      <div class="w-full max-w-sm bg-gradient-to-br from-zinc-900 to-zinc-950 border border-red-500/30 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-32 h-32 bg-red-600/20 rounded-full blur-2xl"></div>
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+          <span class="text-[11px] font-extrabold uppercase tracking-wider text-red-400 font-cinzel">⭐ Promo Destacada</span>
+          <span class="px-2 py-0.5 rounded-full bg-red-500 text-white text-[10px] font-black uppercase">Más Vendida</span>
+        </div>
+        <div class="pt-3 space-y-2">
+          <h3 class="font-bold text-lg text-white font-cinzel">Promo Kitchen 50 Cortes</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            10 Pollo cebollín + 10 Pollo pimentón + 10 Pollo palta + 10 Mechada aceituna + 10 Mechada cebollín. En panko crocante e incluye 4 salsas artesanales.
+          </p>
+          <div class="flex items-center justify-between pt-3">
+            <div>
+              <span class="text-xs text-zinc-500 block">Precio especial</span>
+              <span class="text-2xl font-black text-white font-cinzel text-red-500">$12.990</span>
+            </div>
+            <button onclick="addToCart('promo-kitchen-50')" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-red-950/50 active:scale-95 transition-all">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Agregar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROLES RÁPIDOS (Búsqueda y Filtro de Categorías) -->
+  <section id="carta-productos" class="sticky top-[65px] z-30 bg-[#0d0f12]/95 backdrop-blur-md border-b border-zinc-800/80 px-4 py-3">
+    <div class="max-w-6xl mx-auto space-y-2.5">
+      <!-- Barra de Búsqueda -->
+      <div class="flex items-center gap-2">
+        <div class="relative flex-1">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Buscar rolls, tablas, sushi burgers, handrolls..."
+            oninput="handleSearch()"
+            class="w-full pl-9 pr-4 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-red-500 transition-colors"
+          />
+        </div>
+        <button onclick="toggleCardVisibility()" id="btnToggleCarta" class="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-xs text-zinc-300 hover:text-white transition-colors" title="Ocultar o mostrar toda la carta">
+          <i data-lucide="eye-off" class="w-3.5 h-3.5 text-zinc-400"></i>
+          <span id="btnToggleCartaText">Ocultar Carta</span>
+        </button>
+      </div>
+
+      <!-- Carrusel de Categorías (Chips) -->
+      <div id="categoriesBar" class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+        <!-- Renderizado dinámico -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENEDOR DE PRODUCTOS -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8">
+    <div id="cartaContainer" class="space-y-12">
+      <!-- Los productos agrupados por categorías se inyectan dinámicamente aquí -->
+    </div>
+    <div id="noProductsFound" class="hidden text-center py-16 space-y-3">
+      <i data-lucide="search-x" class="w-12 h-12 text-zinc-600 mx-auto"></i>
+      <h3 class="text-base font-bold text-zinc-300">No encontramos productos que coincidan</h3>
+      <p class="text-xs text-zinc-500">Prueba con otra palabra o limpia el buscador.</p>
+      <button onclick="resetSearch()" class="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-red-400 font-bold hover:bg-zinc-800">
+        Ver todos los productos
+      </button>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-zinc-950 border-t border-zinc-800/80 px-4 py-8 text-zinc-400 text-xs">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div class="space-y-1">
+        <h4 class="font-cinzel font-bold text-white text-base">KITCHEN LOS AROMOS</h4>
+        <p class="text-zinc-500">Coquimbo, Región de Coquimbo, Chile</p>
+        <p class="text-[11px] text-zinc-500">WhatsApp oficial: +56 9 7955 3144</p>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <button onclick="openModal('shareModal')" class="text-zinc-400 hover:text-white transition-colors">
+          Compartir Carta & QR
+        </button>
+        <span>•</span>
+        <a href="https://wa.me/c/56979553144" target="_blank" class="text-emerald-400 hover:text-emerald-300 transition-colors font-medium">
+          Catálogo WhatsApp Directo
+        </a>
+        <span>•</span>
+        <button onclick="openModal('httpsInfoModal')" class="text-red-400 hover:text-red-300 transition-colors font-medium">
+          Información HTTPS & Hosting
+        </button>
+      </div>
+      <div class="text-[11px] text-zinc-600">
+        © <span id="currentYear"></span> Kitchen Los Aromos. Todos los derechos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: CARRITO DE COMPRAS & PEDIDO A WHATSAPP -->
+  <!-- ============================================================== -->
+  <div id="cartModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-end">
+    <div class="w-full max-w-md h-full bg-[#12151b] border-l border-zinc-800 flex flex-col justify-between shadow-2xl p-5 overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-zinc-800">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            </div>
+            <h3 class="font-bold text-white text-base font-cinzel">Tu Pedido</h3>
+          </div>
+          <button onclick="toggleCart()" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Lista de productos en el carrito -->
+        <div id="cartItemsList" class="py-4 space-y-3">
+          <!-- Items del carrito -->
+        </div>
+
+        <div id="cartEmptyMessage" class="py-12 text-center text-zinc-500 text-xs">
+          <i data-lucide="shopping-cart" class="w-10 h-10 mx-auto text-zinc-600 mb-2"></i>
+          <p>Tu carrito está vacío.</p>
+          <p class="text-[11px] text-zinc-600">Agrega tus productos favoritos desde la carta.</p>
+        </div>
+      </div>
+
+      <!-- Opciones de Envío y Resumen -->
+      <div id="cartSummarySection" class="border-t border-zinc-800 pt-4 space-y-3">
+        <!-- Tipo de Entrega -->
+        <div>
+          <label class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">Método de Entrega</label>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <label class="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-zinc-900 border border-zinc-800 cursor-pointer has-[:checked]:border-red-500 has-[:checked]:bg-red-500/10 has-[:checked]:text-white text-zinc-400">
+              <input type="radio" name="deliveryMethod" value="delivery" checked class="hidden" onchange="updateDeliveryMethod(this.value)">
+              <i data-lucide="truck" class="w-3.5 h-3.5"></i>
+              <span>A Domicilio</span>
+            </label>
+            <label class="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-zinc-900 border border-zinc-800 cursor-pointer has-[:checked]:border-red-500 has-[:checked]:bg-red-500/10 has-[:checked]:text-white text-zinc-400">
+              <input type="radio" name="deliveryMethod" value="retiro" class="hidden" onchange="updateDeliveryMethod(this.value)">
+              <i data-lucide="store" class="w-3.5 h-3.5"></i>
+              <span>Retiro en Local</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Datos del Cliente -->
+        <div class="space-y-2 text-xs">
+          <input id="clientName" type="text" placeholder="Tu Nombre y Apellido" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-red-500">
+          <input id="clientAddress" type="text" placeholder="Dirección exacta (calle, número, sector)" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-red-500">
+          <textarea id="orderNotes" rows="2" placeholder="Observaciones: sin cebollín, salsas extras, etc." class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-red-500 text-xs"></textarea>
+        </div>
+
+        <!-- Totales -->
+        <div class="pt-2 border-t border-zinc-800 space-y-1 text-xs">
+          <div class="flex justify-between text-zinc-400">
+            <span>Subtotal</span>
+            <span id="cartSubtotal" class="font-semibold text-zinc-200">$0</span>
+          </div>
+          <div class="flex justify-between text-zinc-400">
+            <span>Envío estimado</span>
+            <span id="cartDeliveryFee" class="font-semibold text-emerald-400">$1.500</span>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-white pt-2 border-t border-zinc-800/60">
+            <span>Total a pagar</span>
+            <span id="cartTotal" class="text-base text-red-500 font-cinzel font-black">$0</span>
+          </div>
+        </div>
+
+        <!-- Botón Enviar a WhatsApp -->
+        <button onclick="sendOrderToWhatsApp()" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl shadow-emerald-950/60 transition-all">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>Enviar Pedido a WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: COMPARTIR CARTA & CÓDIGO QR -->
+  <!-- ============================================================== -->
+  <div id="shareModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="w-full max-w-md bg-[#12151b] border border-zinc-800 rounded-3xl p-6 shadow-2xl relative space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center">
+            <i data-lucide="share-2" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-base font-cinzel">Compartir Carta Digital</h3>
+            <p class="text-[11px] text-zinc-400">Código QR y enlace directo</p>
+          </div>
+        </div>
+        <button onclick="closeModal('shareModal')" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- QR Code Display -->
+      <div class="bg-white p-4 rounded-2xl max-w-[220px] mx-auto text-center shadow-lg space-y-2">
+        <div id="qrcodeCanvas" class="flex justify-center"></div>
+        <p class="text-[10px] font-bold text-zinc-800 uppercase tracking-wider font-cinzel">KITCHEN LOS AROMOS</p>
+      </div>
+
+      <!-- Enlace copiable -->
+      <div class="space-y-1.5">
+        <label class="text-[11px] font-semibold text-zinc-400">Enlace de la Carta:</label>
+        <div class="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-xl p-1.5">
+          <input id="shareUrlInput" type="text" readonly class="bg-transparent text-xs text-zinc-300 font-mono px-2 flex-1 outline-none select-all">
+          <button onclick="copyShareUrl()" id="btnCopyUrl" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-colors">
+            Copiar
+          </button>
+        </div>
+      </div>
+
+      <!-- Acciones de compartir -->
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <a id="btnShareWhatsApp" href="#" target="_blank" class="py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center justify-center gap-1.5 transition-colors">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>WhatsApp</span>
+        </a>
+        <a href="https://wa.me/c/56979553144" target="_blank" class="py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white font-semibold flex items-center justify-center gap-1.5 transition-colors">
+          <i data-lucide="external-link" class="w-4 h-4 text-emerald-400"></i>
+          <span>Catálogo WA</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: RESERVAR MESA -->
+  <!-- ============================================================== -->
+  <div id="reservaModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="w-full max-w-md bg-[#12151b] border border-zinc-800 rounded-3xl p-6 shadow-2xl relative space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-500 flex items-center justify-center">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-base font-cinzel">Reservar Mesa</h3>
+            <p class="text-[11px] text-zinc-400">Confirmación directa por WhatsApp</p>
+          </div>
+        </div>
+        <button onclick="closeModal('reservaModal')" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-zinc-400 block mb-1 font-semibold">Nombre de la reserva</label>
+          <input id="reservaName" type="text" placeholder="Ej: Marcela González" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-zinc-400 block mb-1 font-semibold">Fecha</label>
+            <input id="reservaDate" type="date" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="text-zinc-400 block mb-1 font-semibold">Hora</label>
+            <input id="reservaTime" type="time" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500">
+          </div>
+        </div>
+        <div>
+          <label class="text-zinc-400 block mb-1 font-semibold">Cantidad de personas</label>
+          <select id="reservaGuests" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500">
+            <option value="2">2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4" selected>4 personas</option>
+            <option value="5">5 personas</option>
+            <option value="6">6 personas</option>
+            <option value="8+">8 o más personas</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-zinc-400 block mb-1 font-semibold">Comentarios / Ocasión especial</label>
+          <input id="reservaNotes" type="text" placeholder="Cumpleaños, aniversario, mesa exterior..." class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500">
+        </div>
+      </div>
+
+      <button onclick="sendReservationToWhatsApp()" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-colors">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        <span>Solicitar Reserva por WhatsApp</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: INFORMACIÓN HTTPS & CÓDIGO FUENTE -->
+  <!-- ============================================================== -->
+  <div id="httpsInfoModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-[#12151b] border border-zinc-800 rounded-3xl p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-base font-cinzel">Información HTTPS</h3>
+            <p class="text-[11px] text-zinc-400">Seguridad SSL y Alojamiento Web</p>
+          </div>
+        </div>
+        <button onclick="closeModal('httpsInfoModal')" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs text-zinc-300">
+        <p class="leading-relaxed">
+          Esta versión de la carta está configurada con <strong>HTTPS 100% nativo</strong> y todas las librerías cargan mediante CDNs seguras y encriptadas con certificado SSL.
+        </p>
+
+        <div class="p-3.5 bg-zinc-900 border border-zinc-800 rounded-xl space-y-1.5">
+          <span class="font-bold text-white block">🌐 Enlace HTTPS oficial:</span>
+          <span class="text-emerald-400 font-mono text-[11px] break-all block">
+            https://ais-pre-otwagfthzotxd5ox6yjt4x-721396287143.us-west2.run.app
+          </span>
+        </div>
+
+        <div class="p-3.5 bg-zinc-900 border border-zinc-800 rounded-xl space-y-1.5">
+          <span class="font-bold text-white block">📲 Catálogo WhatsApp Business:</span>
+          <span class="text-zinc-400 font-mono text-[11px] break-all block">
+            https://wa.me/c/56979553144
+          </span>
+        </div>
+
+        <div class="pt-2">
+          <span class="font-bold text-white block mb-1">¿Cómo alojar este archivo en tu propio hosting?</span>
+          <p class="text-zinc-400 text-[11px] leading-relaxed">
+            Este archivo HTML es <strong>completamente autónomo e independiente</strong>. Puedes subirlo a cualquier servidor web (como Netlify, Vercel, Hostinger, cPanel o GitHub Pages) y funcionará instantáneamente en cualquier celular del mundo con HTTPS gratuito.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT DE PRODUCTOS, CARRITO Y LÓGICA -->
+  <script>
+    // LISTA OFICIAL DE PRODUCTOS DE KITCHEN LOS AROMOS
+    const CATEGORIES = [
+      { id: 'promociones', name: 'Promociones & Tablas', icon: 'sparkles' },
+      { id: 'sushi-burgers', name: 'Sushi Burgers', icon: 'utensils' },
+      { id: 'hand-rolls', name: 'Hand Rolls', icon: 'flame' },
+      { id: 'sandwiches-fastfood', name: 'Sándwiches & Fast Food', icon: 'beef' },
+      { id: 'cortes-sushi', name: 'Rolls Individuales', icon: 'fish' },
+      { id: 'gohan', name: 'Gohan Bowls', icon: 'bowl' },
+      { id: 'smoothies-bebidas', name: 'Smoothies & Bebidas', icon: 'cup-soda' },
+    ];
+
+    const PRODUCTS = [
+      {
+        id: 'promo-kitchen-50',
+        name: 'Promo Kitchen 50 Cortes',
+        category: 'promociones',
+        price: 12990,
+        pieces: '50 piezas',
+        description: '10 Pollo cebollín + 10 Pollo pimentón + 10 Pollo palta + 10 Mechada aceituna + 10 Mechada cebollín. En panko crocante y fríos. Incluye 4 salsas artesanales.',
+        badge: 'Top Ventas'
+      },
+      {
+        id: 'promo-40-cortes',
+        name: 'Promo 40 Cortes de Sushi + 4 Salsas',
+        category: 'promociones',
+        price: 10000,
+        pieces: '40 piezas',
+        description: '40 cortes mixtos calientes en panko y fríos: pollo teriyaki, kanikama, queso crema y vegetales seleccionados. Incluye salsas y palitos.',
+        badge: 'Económica'
+      },
+      {
+        id: 'promo-2-handrolls-smoothies',
+        name: 'Promo 2 Handrolls + 2 Smoothies de Frutilla',
+        category: 'promociones',
+        price: 10990,
+        description: 'Dos Handrolls fritos en panko crocante con abundante queso crema (Pollo o Mechada) + dos refrescantes Smoothies de Frutilla natural de la casa.',
+        badge: 'Combo Dúo'
+      },
+      {
+        id: 'tabla-30-piezas',
+        name: 'Tabla Los Aromos 30 Piezas',
+        category: 'promociones',
+        price: 13990,
+        pieces: '30 piezas',
+        description: '10 Tori Hot (pollo, queso, cebollín) + 10 Avocado Roll (kanikama, queso en palta) + 10 California Maki en sésamo.',
+      },
+      {
+        id: 'mega-promo-40-hot',
+        name: 'Mega Promo 40 Piezas Full Hot Panko',
+        category: 'promociones',
+        price: 17990,
+        pieces: '40 piezas',
+        description: '40 piezas 100% fritas en panko: 10 Chicken Furai, 10 Ebi Panko, 10 Kani Hot y 10 Champiñón Tempura con queso crema.',
+      },
+      // Sushi Burgers
+      {
+        id: 'burger-mechada',
+        name: 'Sushi Burger Mechada Especial',
+        category: 'sushi-burgers',
+        price: 7990,
+        description: 'Tapas de arroz apanadas en panko crocante rellenas de abundante carne mechada casera deshilachada, palta hass, queso crema y salsa de la casa.',
+        badge: 'Especialidad'
+      },
+      {
+        id: 'burger-pollo-teriyaki',
+        name: 'Sushi Burger Pollo Teriyaki',
+        category: 'sushi-burgers',
+        price: 6990,
+        description: 'Hamburguesa de arroz frita en panko con pollo teriyaki jugoso, cebollín fresco, queso crema y palta laminada.',
+      },
+      {
+        id: 'burger-camaron-ebi',
+        name: 'Sushi Burger Ebi Camarón Furai',
+        category: 'sushi-burgers',
+        price: 8490,
+        description: 'Camarones apanados crocantes, queso philadelphia, ciboulette y palta en tapas de arroz crujientes en panko.',
+      },
+      // Hand Rolls
+      {
+        id: 'handroll-pollo-queso',
+        name: 'Hand Roll Pollo & Queso Crema',
+        category: 'hand-rolls',
+        price: 3490,
+        description: 'Cono de sushi apanado frito en panko con tierno pollo salteado, cebollín y abundante queso crema.',
+      },
+      {
+        id: 'handroll-mechada-queso',
+        name: 'Hand Roll Carne Mechada & Queso Crema',
+        category: 'hand-rolls',
+        price: 3990,
+        description: 'Carne mechada casera jugosa, queso crema y toques de cebollín envueltos en panko dorado y crujiente.',
+        badge: 'Recomendado'
+      },
+      {
+        id: 'handroll-camaron-queso',
+        name: 'Hand Roll Camarón Ebi & Queso Crema',
+        category: 'hand-rolls',
+        price: 4290,
+        description: 'Camarones seleccionados, queso philadelphia y ciboulette fresco en cono frito en panko.',
+      },
+      // Fast Food y Sándwiches
+      {
+        id: 'sandwich-mechada-luco',
+        name: 'Sándwich Mechada Luco en Pan Brioche',
+        category: 'sandwiches-fastfood',
+        price: 6990,
+        description: 'Generosa porción de carne mechada tierna cocinada a fuego lento con abundante queso derretido en pan artesanal.',
+        badge: 'Nuevo'
+      },
+      {
+        id: 'papas-cheddar-bacon',
+        name: 'Papas Fritas con Queso Cheddar & Tocino Crispy',
+        category: 'sandwiches-fastfood',
+        price: 5990,
+        description: 'Papas fritas crujientes bañadas en salsa de queso cheddar caliente y coronadas con trocitos de tocino crocante.',
+        badge: 'Para Compartir'
+      },
+      // Rolls
+      {
+        id: 'salmon-nevado',
+        name: 'Salmón Nevado Roll (10 Cortes)',
+        category: 'cortes-sushi',
+        price: 6490,
+        description: 'Camarón furai y palta hass por dentro, envuelto en fino salmón con topping de queso crema flambeado.',
+      },
+      {
+        id: 'tori-hot-roll',
+        name: 'Hot Pollo Furai Roll (10 Cortes)',
+        category: 'cortes-sushi',
+        price: 4990,
+        description: 'Pollo teriyaki, queso crema y cebollín frito en crocante panko japonés.',
+      },
+      // Gohan
+      {
+        id: 'gohan-mixto',
+        name: 'Gohan Bowl Especial Mixto',
+        category: 'gohan',
+        price: 6990,
+        description: 'Base de arroz sazonado con pollo teriyaki, camarones apanados, cubos de queso crema, palta hass y sésamo tostado.',
+      },
+      // Smoothies y Bebidas
+      {
+        id: 'smoothie-frutilla',
+        name: 'Smoothie Natural de Frutilla 500ml',
+        category: 'smoothies-bebidas',
+        price: 2990,
+        description: 'Smoothie helado preparado con frutillas naturales seleccionadas.',
+      },
+      {
+        id: 'smoothie-oreo',
+        name: 'Smoothie Cremoso de Galletas Oreo 500ml',
+        category: 'smoothies-bebidas',
+        price: 3490,
+        description: 'Deliciosa malteada helada con trozos crocantes de galletas Oreo y crema batida.',
+      }
+    ];
+
+    // ESTADO DE LA APLICACIÓN
+    let cart = {};
+    let selectedCategory = 'all';
+    let searchQuery = '';
+    let isCartaHidden = false;
+    let deliveryMethod = 'delivery';
+    const DELIVERY_FEE = 1500;
+    const PHONE_NUMBER = '56979553144';
+
+    // RENDERIZAR CATEGORÍAS
+    function renderCategories() {
+      const container = document.getElementById('categoriesBar');
+      let html = `
+        <button onclick="filterCategory('all')" class="shrink-0 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all ${
+          selectedCategory === 'all'
+            ? 'bg-red-600 border-red-500 text-white'
+            : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'
+        }">
+          Todos
+        </button>
+      `;
+
+      CATEGORIES.forEach(cat => {
+        const isSelected = selectedCategory === cat.id;
+        html += `
+          <button onclick="filterCategory('${cat.id}')" class="shrink-0 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all ${
+            isSelected
+              ? 'bg-red-600 border-red-500 text-white'
+              : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'
+          }">
+            ${cat.name}
+          </button>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    // FILTRAR POR CATEGORÍA
+    function filterCategory(catId) {
+      selectedCategory = catId;
+      renderCategories();
+      renderProducts();
+    }
+
+    // BUSCADOR
+    function handleSearch() {
+      searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+      renderProducts();
+    }
+
+    function resetSearch() {
+      document.getElementById('searchInput').value = '';
+      searchQuery = '';
+      selectedCategory = 'all';
+      renderCategories();
+      renderProducts();
+    }
+
+    // OCULTAR / MOSTRAR CARTA
+    function toggleCardVisibility() {
+      isCartaHidden = !isCartaHidden;
+      const container = document.getElementById('cartaContainer');
+      const text = document.getElementById('btnToggleCartaText');
+      if (isCartaHidden) {
+        container.classList.add('hidden');
+        text.innerText = 'Mostrar Carta';
+      } else {
+        container.classList.remove('hidden');
+        text.innerText = 'Ocultar Carta';
+      }
+    }
+
+    // RENDERIZAR PRODUCTOS
+    function renderProducts() {
+      const container = document.getElementById('cartaContainer');
+      const noProducts = document.getElementById('noProductsFound');
+
+      const filtered = PRODUCTS.filter(p => {
+        const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
+        const matchesSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        noProducts.classList.remove('hidden');
+        return;
+      }
+
+      noProducts.classList.add('hidden');
+
+      // Agrupar por categorías si está en "all", o mostrar la categoría seleccionada
+      let html = '';
+      const categoriesToShow = selectedCategory === 'all' 
+        ? CATEGORIES 
+        : CATEGORIES.filter(c => c.id === selectedCategory);
+
+      categoriesToShow.forEach(cat => {
+        const catProducts = filtered.filter(p => p.category === cat.id);
+        if (catProducts.length === 0) return;
+
+        html += `
+          <div class="space-y-4">
+            <div class="flex items-center gap-2 border-b border-zinc-800 pb-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+              <h3 class="text-lg sm:text-xl font-bold text-white font-cinzel">${cat.name}</h3>
+              <span class="text-xs text-zinc-500">(${catProducts.length})</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${catProducts.map(p => `
+                <div class="bg-[#13161c] border border-zinc-800/80 rounded-2xl p-4 flex flex-col justify-between hover:border-zinc-700 transition-all shadow-md group">
+                  <div class="space-y-2">
+                    <div class="flex items-start justify-between gap-2">
+                      <h4 class="font-bold text-sm sm:text-base text-white group-hover:text-red-400 transition-colors">
+                        ${p.name}
+                      </h4>
+                      ${p.badge ? `<span class="shrink-0 px-2 py-0.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-[10px] font-bold uppercase">${p.badge}</span>` : ''}
+                    </div>
+                    <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                      ${p.description}
+                    </p>
+                  </div>
+
+                  <div class="flex items-center justify-between pt-4 mt-2 border-t border-zinc-800/60">
+                    <div>
+                      <span class="text-xs text-zinc-500 block">Precio</span>
+                      <span class="text-base sm:text-lg font-bold text-white font-cinzel">$${p.price.toLocaleString('es-CL')}</span>
+                    </div>
+
+                    <button onclick="addToCart('${p.id}')" class="px-3.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold flex items-center gap-1 shadow-md shadow-red-950/40 active:scale-95 transition-transform">
+                      <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                      <span>Agregar</span>
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    // CARRITO DE COMPRAS
+    function addToCart(productId) {
+      if (!cart[productId]) {
+        cart[productId] = 1;
+      } else {
+        cart[productId]++;
+      }
+      updateCartUI();
+      // Pequeña animación visual
+      const badge = document.getElementById('cartCountBadge');
+      badge.classList.add('scale-125');
+      setTimeout(() => badge.classList.remove('scale-125'), 200);
+    }
+
+    function changeQuantity(productId, delta) {
+      if (!cart[productId]) return;
+      cart[productId] += delta;
+      if (cart[productId] <= 0) {
+        delete cart[productId];
+      }
+      updateCartUI();
+    }
+
+    function updateDeliveryMethod(val) {
+      deliveryMethod = val;
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const itemsList = document.getElementById('cartItemsList');
+      const emptyMsg = document.getElementById('cartEmptyMessage');
+      const summarySec = document.getElementById('cartSummarySection');
+      const badge = document.getElementById('cartCountBadge');
+      const subtotalEl = document.getElementById('cartSubtotal');
+      const deliveryEl = document.getElementById('cartDeliveryFee');
+      const totalEl = document.getElementById('cartTotal');
+
+      const productIds = Object.keys(cart);
+      const totalCount = productIds.reduce((sum, id) => sum + cart[id], 0);
+      badge.innerText = totalCount;
+
+      if (totalCount === 0) {
+        emptyMsg.classList.remove('hidden');
+        itemsList.innerHTML = '';
+        summarySec.classList.add('opacity-50', 'pointer-events-none');
+        subtotalEl.innerText = '$0';
+        totalEl.innerText = '$0';
+        return;
+      }
+
+      emptyMsg.classList.add('hidden');
+      summarySec.classList.remove('opacity-50', 'pointer-events-none');
+
+      let subtotal = 0;
+      let html = '';
+
+      productIds.forEach(id => {
+        const product = PRODUCTS.find(p => p.id === id);
+        if (!product) return;
+        const qty = cart[id];
+        const itemTotal = product.price * qty;
+        subtotal += itemTotal;
+
+        html += `
+          <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
+            <div class="flex-1 min-w-0">
+              <h5 class="text-xs font-bold text-white truncate">${product.name}</h5>
+              <span class="text-[11px] text-zinc-400">$${product.price.toLocaleString('es-CL')} c/u</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex items-center bg-zinc-800 rounded-lg border border-zinc-700">
+                <button onclick="changeQuantity('${id}', -1)" class="w-6 h-6 flex items-center justify-center text-zinc-300 hover:text-white">-</button>
+                <span class="w-6 text-center text-xs font-bold text-white">${qty}</span>
+                <button onclick="changeQuantity('${id}', 1)" class="w-6 h-6 flex items-center justify-center text-zinc-300 hover:text-white">+</button>
+              </div>
+              <span class="text-xs font-bold text-white w-16 text-right">$${itemTotal.toLocaleString('es-CL')}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      itemsList.innerHTML = html;
+
+      const fee = deliveryMethod === 'delivery' ? DELIVERY_FEE : 0;
+      const total = subtotal + fee;
+
+      subtotalEl.innerText = `$${subtotal.toLocaleString('es-CL')}`;
+      deliveryEl.innerText = deliveryMethod === 'delivery' ? `$${fee.toLocaleString('es-CL')}` : 'Gratis (Retiro)';
+      totalEl.innerText = `$${total.toLocaleString('es-CL')}`;
+      lucide.createIcons();
+    }
+
+    function toggleCart() {
+      const modal = document.getElementById('cartModal');
+      if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    // ENVIAR PEDIDO A WHATSAPP
+    function sendOrderToWhatsApp() {
+      const productIds = Object.keys(cart);
+      if (productIds.length === 0) {
+        alert('Agrega al menos un producto a tu pedido');
+        return;
+      }
+
+      const clientName = document.getElementById('clientName').value.trim();
+      const clientAddress = document.getElementById('clientAddress').value.trim();
+      const orderNotes = document.getElementById('orderNotes').value.trim();
+
+      if (!clientName) {
+        alert('Por favor ingresa tu nombre');
+        document.getElementById('clientName').focus();
+        return;
+      }
+
+      if (deliveryMethod === 'delivery' && !clientAddress) {
+        alert('Por favor ingresa tu dirección para el despacho');
+        document.getElementById('clientAddress').focus();
+        return;
+      }
+
+      let subtotal = 0;
+      let text = `🍣 *¡HOLA KITCHEN LOS AROMOS! Quiero hacer un pedido:*%0A%0A`;
+      text += `👤 *Cliente:* ${encodeURIComponent(clientName)}%0A`;
+      text += `🛵 *Tipo:* ${deliveryMethod === 'delivery' ? 'Despacho a Domicilio' : 'Retiro en Local'}%0A`;
+      if (deliveryMethod === 'delivery') {
+        text += `📍 *Dirección:* ${encodeURIComponent(clientAddress)}%0A`;
+      }
+      text += `%0A📋 *DETALLE DEL PEDIDO:*%0A`;
+
+      productIds.forEach(id => {
+        const product = PRODUCTS.find(p => p.id === id);
+        if (!product) return;
+        const qty = cart[id];
+        const itemTotal = product.price * qty;
+        subtotal += itemTotal;
+        text += `• ${qty}x ${encodeURIComponent(product.name)} - $${itemTotal.toLocaleString('es-CL')}%0A`;
+      });
+
+      const fee = deliveryMethod === 'delivery' ? DELIVERY_FEE : 0;
+      const total = subtotal + fee;
+
+      text += `%0A💰 *Subtotal:* $${subtotal.toLocaleString('es-CL')}%0A`;
+      if (deliveryMethod === 'delivery') {
+        text += `🛵 *Envío:* $${fee.toLocaleString('es-CL')}%0A`;
+      }
+      text += `💵 *TOTAL A PAGAR:* $${total.toLocaleString('es-CL')}%0A`;
+
+      if (orderNotes) {
+        text += `%0A📝 *Observaciones:* ${encodeURIComponent(orderNotes)}%0A`;
+      }
+
+      text += `%0A¡Muchas gracias! Quedo a la espera de los datos de transferencia o confirmación.`;
+
+      const waUrl = `https://wa.me/${PHONE_NUMBER}?text=${text}`;
+      window.open(waUrl, '_blank');
+    }
+
+    // ENVIAR RESERVA A WHATSAPP
+    function sendReservationToWhatsApp() {
+      const name = document.getElementById('reservaName').value.trim();
+      const date = document.getElementById('reservaDate').value;
+      const time = document.getElementById('reservaTime').value;
+      const guests = document.getElementById('reservaGuests').value;
+      const notes = document.getElementById('reservaNotes').value.trim();
+
+      if (!name || !date || !time) {
+        alert('Por favor completa tu nombre, fecha y hora de la reserva');
+        return;
+      }
+
+      let text = `🥢 *HOLA KITCHEN LOS AROMOS, quisiera solicitar una reserva de mesa:*%0A%0A`;
+      text += `👤 *Nombre:* ${encodeURIComponent(name)}%0A`;
+      text += `📅 *Fecha:* ${date}%0A`;
+      text += `⏰ *Hora:* ${time}%0A`;
+      text += `👥 *Personas:* ${guests}%0A`;
+      if (notes) {
+        text += `📝 *Comentarios:* ${encodeURIComponent(notes)}%0A`;
+      }
+      text += `%0AQuedo atento a la confirmación de disponibilidad. ¡Gracias!`;
+
+      window.open(`https://wa.me/${PHONE_NUMBER}?text=${text}`, '_blank');
+      closeModal('reservaModal');
+    }
+
+    // MODALES GENERALES
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    // COPIAR URL
+    function copyShareUrl() {
+      const input = document.getElementById('shareUrlInput');
+      input.select();
+      document.execCommand('copy');
+      const btn = document.getElementById('btnCopyUrl');
+      btn.innerText = '¡Copiado!';
+      setTimeout(() => btn.innerText = 'Copiar', 2000);
+    }
+
+    // INICIALIZACIÓN
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('currentYear').innerText = new Date().getFullYear();
+      renderCategories();
+      renderProducts();
+      updateCartUI();
+
+      // Configurar URL compartible
+      const currentUrl = window.location.href.split('#')[0];
+      const shareUrlInput = document.getElementById('shareUrlInput');
+      shareUrlInput.value = currentUrl;
+
+      // QR Code
+      const qrContainer = document.getElementById('qrcodeCanvas');
+      if (window.QRCode && qrContainer) {
+        new QRCode(qrContainer, {
+          text: currentUrl,
+          width: 180,
+          height: 180,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }
+
+      // WhatsApp Share button
+      const shareText = encodeURIComponent(`🍣 ¡Hola! Te comparto la carta digital de Kitchen Los Aromos:\n${currentUrl}`);
+      document.getElementById('btnShareWhatsApp').href = `https://api.whatsapp.com/send?text=${shareText}`;
+
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

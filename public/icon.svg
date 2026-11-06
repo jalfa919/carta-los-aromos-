@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0c"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+
+    <linearGradient id="flame" x1="0%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#eab308" />
+      <stop offset="60%" stop-color="#fef08a" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+
+    <linearGradient id="brush" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#dc2626" stop-opacity="0.8" />
+      <stop offset="20%" stop-color="#ef4444" />
+      <stop offset="50%" stop-color="#f87171" />
+      <stop offset="80%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#b91c1c" stop-opacity="0.8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="url(#bg)"/>
+
+  <!-- Subtle border -->
+  <rect x="8" y="8" width="496" height="496" rx="92" fill="none" stroke="#222" stroke-width="2"/>
+
+  <!-- Flame above A -->
+  <path d="M 276 130 C 282 120, 286 100, 280 84 C 289 94, 298 108, 292 122 C 302 114, 308 102, 304 88 C 316 104, 310 126, 294 136 C 284 142, 274 138, 276 130 Z" fill="url(#flame)"/>
+
+  <!-- Main Cursive Wordmark -->
+  <text x="256" y="240" text-anchor="middle" fill="#ffffff" font-family="'Playball', 'Brush Script MT', 'Great Vibes', cursive, sans-serif" font-size="94" font-weight="bold" font-style="italic">Los Aromos</text>
+
+  <!-- KITCHEN & SUSHI -->
+  <text x="256" y="295" text-anchor="middle" fill="#f8fafc" font-family="'Cinzel', 'Playfair Display', serif" font-size="24" font-weight="800" letter-spacing="10">KITCHEN &amp; SUSHI</text>
+
+  <!-- Red Brush Stroke Accent -->
+  <path d="M 80 330 C 160 318, 280 314, 430 324 C 440 324.5, 442 328, 432 329.5 C 340 333, 210 334, 80 330 Z" fill="url(#brush)"/>
+</svg>
